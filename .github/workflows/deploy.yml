@@ -82,16 +82,15 @@ jobs:
           docker tag $ECR_REGISTRY/$ECR_BACKEND_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_BACKEND_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_BACKEND_REPOSITORY:latest
       
-      - name: Build and push frontend image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
+      - name: Build Frontend (Static)
         run: |
           cd frontend
-          docker build -t $ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:$IMAGE_TAG
-          docker tag $ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_FRONTEND_REPOSITORY:latest
+          npm ci
+          npm run build
+
+      - name: Deploy Frontend to S3
+        run: |
+          aws s3 sync frontend/out s3://agentic-assistant-frontend-ae7739c7 --delete
 
   deploy:
     name: Deploy to ECS
@@ -123,6 +122,10 @@ jobs:
             --cluster ${{ env.ECS_CLUSTER }} \
             --services ${{ env.ECS_SERVICE }} \
             --region ${{ env.AWS_REGION }}
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation --distribution-id E38DE1TUL6M22K --paths "/*"
       
       - name: Deployment successful
         run: |
