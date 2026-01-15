@@ -108,7 +108,7 @@ class MemoryEntry(Base):
     category = Column(String(50), nullable=False)
     source = Column(String(50), nullable=False)
     confidence = Column(Float, nullable=False)
-    metadata = Column(JSON, default={})
+    extra_data = Column(JSON, default={})
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     

@@ -26,7 +26,7 @@ cd contextual-agentic-assistant
 cp backend/.env.example backend/.env
 
 # 3. Add credentials to backend/.env
-# (Google OAuth and OpenAI API key - provided separately)
+# (Google OAuth and Google Gemini API key - provided separately)
 
 # 4. Start the application
 docker-compose up --build
@@ -47,7 +47,7 @@ chmod +x scripts/setup.sh
 # Edit backend/.env with:
 # - GOOGLE_CLIENT_ID (from Google Cloud Console)
 # - GOOGLE_CLIENT_SECRET (from Google Cloud Console)
-# - OPENAI_API_KEY (from OpenAI)
+# - GOOGLE_API_KEY (from Google AI Studio)
 
 # 3. Start services
 docker-compose up --build
@@ -205,7 +205,7 @@ Once running, visit:
 DATABASE_URL=postgresql://postgres:postgres@db:5432/assistant
 GOOGLE_CLIENT_ID=your_client_id
 GOOGLE_CLIENT_SECRET=your_client_secret
-OPENAI_API_KEY=your_api_key
+GOOGLE_API_KEY=your_gemini_api_key
 SECRET_KEY=your_secret_key
 FRONTEND_URL=http://localhost:3000
 ```

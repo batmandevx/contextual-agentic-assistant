@@ -21,9 +21,9 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_SECRET: str
     GOOGLE_REDIRECT_URI: str = "http://localhost:8000/api/auth/callback"
     
-    # OpenAI
-    OPENAI_API_KEY: str
-    OPENAI_MODEL: str = "gpt-4-turbo-preview"
+    # Google Gemini
+    GOOGLE_API_KEY: str
+    GEMINI_MODEL: str = "gemini-pro"
     
     # Security
     SECRET_KEY: str
@@ -34,7 +34,15 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:3000"
     
     # CORS
-    CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:3001"]
+    CORS_ORIGINS: str = '["http://localhost:3000"]'
+    
+    @property
+    def cors_origins_list(self) -> list[str]:
+        """Parse CORS_ORIGINS string to list."""
+        import json
+        if isinstance(self.CORS_ORIGINS, str):
+            return json.loads(self.CORS_ORIGINS)
+        return self.CORS_ORIGINS
     
     # Rate Limiting
     RATE_LIMIT_PER_MINUTE: int = 60

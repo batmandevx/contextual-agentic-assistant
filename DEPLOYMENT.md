@@ -9,7 +9,7 @@ This guide will help you deploy the Contextual Agentic AI Assistant to AWS.
 3. **Terraform** installed (v1.0+)
 4. **Docker** installed
 5. **Google Cloud Console** project with OAuth credentials
-6. **OpenAI API Key**
+6. **Google Gemini API Key**
 
 ## Step 1: Google Cloud Console Setup
 
@@ -44,7 +44,7 @@ cp terraform/terraform.tfvars.example terraform/terraform.tfvars
 ```hcl
 google_client_id     = "your-google-client-id"
 google_client_secret = "your-google-client-secret"
-openai_api_key       = "sk-your-openai-api-key"
+google_api_key       = "AIza-your-gemini-api-key"
 secret_key           = "generate-a-random-32-character-string"
 db_password          = "your-secure-database-password"
 ```
@@ -129,7 +129,7 @@ alembic upgrade head
    - `AWS_SECRET_ACCESS_KEY`
    - `GOOGLE_CLIENT_ID`
    - `GOOGLE_CLIENT_SECRET`
-   - `OPENAI_API_KEY`
+   - `GOOGLE_API_KEY`
    - `SECRET_KEY`
 
 4. Push to main branch to trigger deployment:

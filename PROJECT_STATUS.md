@@ -16,6 +16,7 @@ This project is **submission-ready** for the Sentellent Hiring Challenge. Phase 
 - ✅ **LangGraph Agent** with basic workflow (retrieve_memory → call_llm → execute_tool → extract_memory)
 - ✅ **Chat API** endpoints for messaging and conversation management
 - ✅ **Configuration Management** with environment variables
+- ✅ **Google Gemini Integration** for LLM capabilities
 - ✅ **Logging** with structured JSON logging
 
 #### 2. Frontend (React/Next.js/TypeScript)
@@ -101,7 +102,7 @@ This project is **submission-ready** for the Sentellent Hiring Challenge. Phase 
 # 2. Configure credentials in backend/.env
 # - GOOGLE_CLIENT_ID
 # - GOOGLE_CLIENT_SECRET  
-# - OPENAI_API_KEY
+# - GOOGLE_API_KEY
 
 # 3. Start services
 docker-compose up --build

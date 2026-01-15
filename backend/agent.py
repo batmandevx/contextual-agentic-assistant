@@ -3,7 +3,7 @@ LangGraph agent for processing user messages with memory and tools.
 """
 from typing import TypedDict, Annotated, List, Dict, Any
 from langgraph.graph import StateGraph, END
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.schema import HumanMessage, AIMessage, SystemMessage
 import logging
 
@@ -29,10 +29,12 @@ class AgenticAssistant:
     
     def __init__(self):
         """Initialize the agent."""
-        self.llm = ChatOpenAI(
-            model=settings.OPENAI_MODEL,
+        self.llm = ChatGoogleGenerativeAI(
+            model=settings.GEMINI_MODEL,
             temperature=0.7,
-            openai_api_key=settings.OPENAI_API_KEY
+            google_api_key=settings.GOOGLE_API_KEY,
+            max_retries=1,
+            timeout=30
         )
         self.graph = self._build_graph()
     
@@ -88,7 +90,8 @@ Be concise, professional, and proactive in offering assistance."""
                 ])
                 system_prompt += f"\n\nRelevant context about the user:\n{memory_text}"
             
-            messages.append(SystemMessage(content=system_prompt))
+            # Gemini doesn't support SystemMessage in this version, using HumanMessage
+            messages.append(HumanMessage(content=f"System Instruction: {system_prompt}"))
             
             # Add conversation history
             for msg in state["messages"]:
@@ -98,7 +101,9 @@ Be concise, professional, and proactive in offering assistance."""
                     messages.append(AIMessage(content=msg["content"]))
             
             # Get response
+            logger.info(f"Invoking LLM with {len(messages)} messages...")
             response = self.llm.invoke(messages)
+            logger.info("LLM invocation successful")
             state["response"] = response.content
             
             # Check if tool is needed (simple keyword detection for now)

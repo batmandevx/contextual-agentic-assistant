@@ -293,7 +293,7 @@ Common issues and their solutions.
      - AWS_SECRET_ACCESS_KEY
      - GOOGLE_CLIENT_ID
      - GOOGLE_CLIENT_SECRET
-     - OPENAI_API_KEY
+     - GOOGLE_API_KEY
      - SECRET_KEY
 
 3. **Common failures**:
@@ -371,29 +371,29 @@ Common issues and their solutions.
 
 ## 🤖 Agent/LLM Issues
 
-### Issue: "OpenAI API error"
+### Issue: "Google Gemini API error"
 **Symptoms**: Chat doesn't respond or shows API error
 
 **Solutions**:
 1. **Verify API key**:
    ```bash
-   # Test API key
-   curl https://api.openai.com/v1/models \
-     -H "Authorization: Bearer YOUR_API_KEY"
+   # Test API key with curl
+   curl "https://generativelanguage.googleapis.com/v1/models?key=YOUR_API_KEY"
    ```
 
 2. **Check API quota**:
-   - Go to: https://platform.openai.com/account/usage
-   - Verify you have credits
+   - Go to: https://aistudio.google.com/
+   - Check your API usage and quotas
+   - Free tier has generous limits
 
 3. **Check rate limits**:
-   - Free tier: 3 requests/minute
-   - Paid tier: Higher limits
+   - Free tier: 60 requests/minute
+   - Verify you're not exceeding limits
 
 4. **Use different model**:
    ```env
    # In backend/.env
-   OPENAI_MODEL=gpt-3.5-turbo  # Cheaper alternative
+   GEMINI_MODEL=gemini-1.5-flash  # Faster, cheaper alternative
    ```
 
 ### Issue: "Agent not responding"

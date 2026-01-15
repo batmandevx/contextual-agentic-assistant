@@ -1,32 +1,33 @@
-FROM node:18-alpine AS builder
-
+FROM node:18-alpine AS deps
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
-# Copy source code
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Build the application
 RUN npm run build
 
-# Production image
-FROM nginx:alpine
+FROM node:18-alpine AS runner
+WORKDIR /app
 
-# Copy built files
-COPY --from=builder /app/out /usr/share/nginx/html
+ENV NODE_ENV production
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# Expose port
-EXPOSE 80
+# Copy necessary files
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
+# Create public directory if it doesn't exist
+RUN mkdir -p ./public
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT 3000
+
+CMD ["node", "server.js"]

@@ -110,7 +110,7 @@ cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env.local
 
 # 2. Edit backend/.env with your credentials
-# (Google OAuth, OpenAI API key)
+# (Google OAuth, Google Gemini API key)
 
 # 3. Start everything
 docker-compose up --build
@@ -118,7 +118,7 @@ docker-compose up --build
 # 4. Visit http://localhost:3000
 ```
 
-**Note**: You'll need Google OAuth credentials and OpenAI API key. See STEP_BY_STEP_GUIDE.md for how to get them.
+**Note**: You'll need Google OAuth credentials and Google Gemini API key. See STEP_BY_STEP_GUIDE.md for how to get them.
 
 ---
 
@@ -132,7 +132,7 @@ For the full experience from setup to submission:
 
 ### Phase 2: Get Credentials (30 min)
 - Google Cloud Console setup
-- OpenAI API key
+- Google Gemini API key
 - **Guide**: STEP_BY_STEP_GUIDE.md → Phase 1 & 2
 
 ### Phase 3: Local Development (30 min)

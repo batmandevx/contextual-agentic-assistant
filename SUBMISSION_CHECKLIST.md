@@ -37,7 +37,7 @@
   - [ ] `AWS_SECRET_ACCESS_KEY`
   - [ ] `GOOGLE_CLIENT_ID`
   - [ ] `GOOGLE_CLIENT_SECRET`
-  - [ ] `OPENAI_API_KEY`
+  - [ ] `GOOGLE_API_KEY`
   - [ ] `SECRET_KEY`
 - [ ] Workflow file committed (`.github/workflows/deploy.yml`)
 - [ ] Pipeline triggered and passed

@@ -249,7 +249,7 @@ resource "aws_db_subnet_group" "main" {
 resource "aws_db_instance" "main" {
   identifier             = "${var.project_name}-db"
   engine                 = "postgres"
-  engine_version         = "15.3"
+  engine_version         = "15.7"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
   storage_type           = "gp2"
@@ -280,7 +280,7 @@ resource "aws_secretsmanager_secret_version" "app_secrets" {
   secret_string = jsonencode({
     GOOGLE_CLIENT_ID     = var.google_client_id
     GOOGLE_CLIENT_SECRET = var.google_client_secret
-    OPENAI_API_KEY       = var.openai_api_key
+    GOOGLE_API_KEY       = var.google_api_key
     SECRET_KEY           = var.secret_key
     DATABASE_URL         = "postgresql://${var.db_username}:${var.db_password}@${aws_db_instance.main.endpoint}/assistant"
   })
@@ -387,8 +387,8 @@ resource "aws_ecs_task_definition" "backend" {
         valueFrom = "${aws_secretsmanager_secret.app_secrets.arn}:GOOGLE_CLIENT_SECRET::"
       },
       {
-        name      = "OPENAI_API_KEY"
-        valueFrom = "${aws_secretsmanager_secret.app_secrets.arn}:OPENAI_API_KEY::"
+        name      = "GOOGLE_API_KEY"
+        valueFrom = "${aws_secretsmanager_secret.app_secrets.arn}:GOOGLE_API_KEY::"
       },
       {
         name      = "SECRET_KEY"

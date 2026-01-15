@@ -170,28 +170,27 @@ aws --version
 
 ---
 
-## 📋 Phase 2: Get OpenAI API Key (10 minutes)
+## 📋 Phase 2: Get Google Gemini API Key (10 minutes)
 
-### Step 7: Create OpenAI Account and Get API Key
+### Step 7: Create Google AI Studio Account and Get API Key
 
-1. **Sign Up for OpenAI**:
-   - Visit: https://platform.openai.com/signup
-   - Create account or sign in
+1. **Go to Google AI Studio**:
+   - Visit: https://aistudio.google.com/
+   - Sign in with your Google account
 
-2. **Add Payment Method**:
-   - Go to: https://platform.openai.com/account/billing
-   - Add a payment method (required for API access)
-   - Add at least $5 credit
+2. **Get API Key**:
+   - Click "Get API key" in the left sidebar
+   - Click "Create API key"
+   - Select "Create API key in new project" or choose existing project
+   - **IMPORTANT**: Copy the API key immediately
+   - Store it securely - you can retrieve it later from the API keys page
 
-3. **Create API Key**:
-   - Go to: https://platform.openai.com/api-keys
-   - Click "Create new secret key"
-   - Name: `Agentic Assistant`
-   - Click "Create secret key"
-   - **IMPORTANT**: Copy the key (starts with `sk-`)
-   - You won't be able to see it again!
+3. **Verify API Access**:
+   - The API key should start with `AIza`
+   - Free tier includes generous quotas for testing
+   - No payment method required for getting started
 
-**✅ Checkpoint**: You should have your OpenAI API key saved securely.
+**✅ Checkpoint**: You should have your Google Gemini API key saved securely.
 
 ---
 
@@ -236,9 +235,9 @@ GOOGLE_CLIENT_ID=your-client-id-here.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=GOCSPX-your-secret-here
 GOOGLE_REDIRECT_URI=http://localhost:8000/api/auth/callback
 
-# Paste your OpenAI API key
-OPENAI_API_KEY=sk-your-key-here
-OPENAI_MODEL=gpt-4-turbo-preview
+# Paste your Google Gemini API key
+GOOGLE_API_KEY=AIza-your-key-here
+GEMINI_MODEL=gemini-1.5-pro
 
 # Generate a random secret key (or use this command)
 # On Mac/Linux: openssl rand -hex 32
@@ -453,8 +452,8 @@ project_name = "agentic-assistant"
 google_client_id     = "your-client-id.apps.googleusercontent.com"
 google_client_secret = "GOCSPX-your-secret"
 
-# Paste your OpenAI API key
-openai_api_key = "sk-your-key"
+# Paste your Google Gemini API key
+google_api_key = "AIza-your-key"
 
 # Generate a secure secret key (32+ characters)
 secret_key = "your-secure-secret-key-at-least-32-characters"
@@ -738,8 +737,8 @@ curl http://YOUR_ALB_URL/api/health
    - Name: `GOOGLE_CLIENT_SECRET`
      Value: Your Google client secret
 
-   - Name: `OPENAI_API_KEY`
-     Value: Your OpenAI API key
+   - Name: `GOOGLE_API_KEY`
+     Value: Your Google Gemini API key
 
    - Name: `SECRET_KEY`
      Value: Your application secret key

@@ -395,8 +395,8 @@ aws rds start-db-instance \
 
 ### External Services
 - Google Cloud Console: https://console.cloud.google.com/
+- Google AI Studio: https://aistudio.google.com/
 - AWS Console: https://console.aws.amazon.com/
-- OpenAI Platform: https://platform.openai.com/
 - GitHub: https://github.com/
 - Submission Form: https://forms.gle/VVd9r4kemkWoiQVQ8
 
@@ -410,7 +410,7 @@ DATABASE_URL=postgresql://user:pass@host:5432/db
 GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=GOCSPX-xxx
 GOOGLE_REDIRECT_URI=http://localhost:8000/api/auth/callback
-OPENAI_API_KEY=sk-xxx
+GOOGLE_API_KEY=AIza-xxx
 SECRET_KEY=xxx
 FRONTEND_URL=http://localhost:3000
 ```

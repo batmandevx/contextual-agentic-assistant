@@ -28,8 +28,8 @@ variable "google_client_secret" {
   sensitive   = true
 }
 
-variable "openai_api_key" {
-  description = "OpenAI API Key"
+variable "google_api_key" {
+  description = "Google Gemini API Key"
   type        = string
   sensitive   = true
 }

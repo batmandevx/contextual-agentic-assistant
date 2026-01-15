@@ -13,7 +13,7 @@ terraform {
   }
   
   backend "s3" {
-    bucket = "agentic-assistant-terraform-state"
+    bucket = "agentic-assistant-tf-state-22975"
     key    = "terraform.tfstate"
     region = "us-east-1"
     encrypt = true

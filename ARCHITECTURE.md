@@ -47,8 +47,8 @@ Visual representation of the system architecture.
        │              │              │              │
        ▼              ▼              ▼              ▼
 ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐
-│   RDS    │  │ Secrets  │  │  Google  │  │   OpenAI     │
-│PostgreSQL│  │ Manager  │  │   APIs   │  │     API      │
+│   RDS    │  │ Secrets  │  │  Google  │  │   Google     │
+│PostgreSQL│  │ Manager  │  │   APIs   │  │   Gemini     │
 │          │  │          │  │          │  │              │
 │- Users   │  │- OAuth   │  │- Gmail   │  │- GPT-4       │
 │- Messages│  │- API Keys│  │- Calendar│  │- Embeddings  │
@@ -125,7 +125,7 @@ LangGraph Agent
     ├─ 6. Call LLM
     │      │
     │      ▼
-    │   OpenAI API (GPT-4)
+    │   Google Gemini API
     │
     ├─ 7. Execute Tools (if needed)
     │      │
@@ -448,7 +448,7 @@ Backend Layer:
 AI/Agent Layer:
 ├─ LangChain
 ├─ LangGraph
-├─ OpenAI GPT-4
+├─ Google Gemini
 └─ MCP Servers
 
 Infrastructure Layer:
