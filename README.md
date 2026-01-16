@@ -310,14 +310,4 @@ For issues or questions:
 ---
 
 **Built with ❤️ for the Sentellent Hiring Challenge**
-\ n # #   D e p l o y e d ! 
- 
- #   P i p e l i n e   T e s t 
- 
- 
-
-## Trigger Pipeline Test (Public)
-
-
-
-# Final trigger test after re-enabling Actions
+\
