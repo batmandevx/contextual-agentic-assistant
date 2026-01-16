@@ -5,7 +5,7 @@ import ChatInterface from '../components/ChatInterface';
 import LoginButton from '../components/LoginButton';
 import { motion } from 'framer-motion';
 import { BsStars, BsShieldLock, BsLightningCharge, BsCpu } from 'react-icons/bs';
-import axios from 'axios';
+import { healthCheck } from '../lib/api';
 
 export default function Home() {
   const { user, loading } = useAuth();
@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        await axios.get('http://localhost:8000/api/health'); // Use env var in prod
+        await healthCheck();
         setBackendHealth(true);
       } catch (error) {
         console.error('Backend offline', error);
