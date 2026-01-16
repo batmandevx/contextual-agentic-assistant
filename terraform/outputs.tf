@@ -8,6 +8,11 @@ output "backend_url" {
   value       = aws_apigatewayv2_api.backend.api_endpoint
 }
 
+output "backend_alb_url" {
+  description = "Backend ALB URL (ECS)"
+  value       = "http://${aws_lb.main.dns_name}"
+}
+
 output "database_endpoint" {
   description = "RDS database endpoint"
   value       = aws_db_instance.main.endpoint
