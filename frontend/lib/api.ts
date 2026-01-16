@@ -3,7 +3,7 @@
  */
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://agentic-assistant-alb-171236663.us-east-1.elb.amazonaws.com';
 
 // Create axios instance
 const api = axios.create({
@@ -28,12 +28,12 @@ export const authAPI = {
     const response = await api.post('/api/auth/login');
     return response.data;
   },
-  
+
   logout: async (token: string) => {
     const response = await api.post('/api/auth/logout', { token });
     return response.data;
   },
-  
+
   getStatus: async (token: string) => {
     const response = await api.get(`/api/auth/status?token=${token}`);
     return response.data;
@@ -49,12 +49,12 @@ export const chatAPI = {
     });
     return response.data;
   },
-  
+
   getHistory: async (conversationId: string) => {
     const response = await api.get(`/api/chat/history/${conversationId}`);
     return response.data;
   },
-  
+
   listConversations: async () => {
     const response = await api.get('/api/chat/conversations');
     return response.data;
