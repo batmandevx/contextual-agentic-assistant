@@ -560,12 +560,59 @@ resource "aws_apigatewayv2_api" "backend" {
   protocol_type = "HTTP"
 
   cors_configuration {
-    allow_origins = ["https://${aws_cloudfront_distribution.frontend.domain_name}"]
+    allow_origins = ["https://${aws_cloudfront_distribution.frontend.domain_name}", "http://localhost:3000"]
     allow_methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     allow_headers = ["*"]
+    allow_credentials = true
   }
 
   tags = {
     Name = "${var.project_name}-api"
+  }
+}
+
+# VPC Link to connect API Gateway to ALB
+resource "aws_apigatewayv2_vpc_link" "backend" {
+  name               = "${var.project_name}-vpc-link"
+  security_group_ids = [aws_security_group.alb.id]
+  subnet_ids         = aws_subnet.public[*].id
+
+  tags = {
+    Name = "${var.project_name}-vpc-link"
+  }
+}
+
+# API Gateway Integration with ALB
+resource "aws_apigatewayv2_integration" "backend" {
+  api_id             = aws_apigatewayv2_api.backend.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = aws_lb_listener.backend.arn
+  integration_method = "ANY"
+  connection_type    = "VPC_LINK"
+  connection_id      = aws_apigatewayv2_vpc_link.backend.id
+}
+
+# Default route to proxy all requests
+resource "aws_apigatewayv2_route" "default" {
+  api_id    = aws_apigatewayv2_api.backend.id
+  route_key = "$default"
+  target    = "integrations/${aws_apigatewayv2_integration.backend.id}"
+}
+
+# API route for all /api/* paths
+resource "aws_apigatewayv2_route" "api" {
+  api_id    = aws_apigatewayv2_api.backend.id
+  route_key = "ANY /api/{proxy+}"
+  target    = "integrations/${aws_apigatewayv2_integration.backend.id}"
+}
+
+# Auto-deploy stage
+resource "aws_apigatewayv2_stage" "default" {
+  api_id      = aws_apigatewayv2_api.backend.id
+  name        = "$default"
+  auto_deploy = true
+
+  tags = {
+    Name = "${var.project_name}-api-stage"
   }
 }

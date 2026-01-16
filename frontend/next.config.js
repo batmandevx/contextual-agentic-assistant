@@ -6,7 +6,7 @@ const nextConfig = {
     unoptimized: true,
   },
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://agentic-assistant-alb-171236663.us-east-1.elb.amazonaws.com',
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://r6vbn1vjpl.execute-api.us-east-1.amazonaws.com',
   },
 }
 
