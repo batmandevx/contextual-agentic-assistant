@@ -223,3 +223,155 @@ async def list_conversations(
             status_code=500,
             detail="Failed to list conversations"
         )
+
+
+# ============= Gmail Endpoints =============
+
+@router.get("/gmail/emails")
+async def get_emails(
+    authorization: str = Header(...),
+    max_results: int = 10,
+    query: str = "",
+    db: Session = Depends(get_db)
+):
+    """Fetch emails from user's Gmail inbox."""
+    from gmail_tools import gmail_tools
+    
+    try:
+        token = authorization.replace("Bearer ", "")
+        payload = verify_token(token)
+        user_id = payload.get("sub")
+        
+        emails = await gmail_tools.fetch_emails(
+            user_id=user_id,
+            max_results=max_results,
+            query=query
+        )
+        
+        return {"emails": emails, "count": len(emails)}
+        
+    except Exception as e:
+        logger.error(f"Error fetching emails: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch emails")
+
+
+@router.get("/gmail/important")
+async def get_important_emails(
+    authorization: str = Header(...),
+    days: int = 3,
+    db: Session = Depends(get_db)
+):
+    """Get important/unread emails from the last N days."""
+    from gmail_tools import gmail_tools
+    
+    try:
+        token = authorization.replace("Bearer ", "")
+        payload = verify_token(token)
+        user_id = payload.get("sub")
+        
+        emails = await gmail_tools.get_important_emails(user_id=user_id, days=days)
+        
+        return {"emails": emails, "count": len(emails)}
+        
+    except Exception as e:
+        logger.error(f"Error fetching important emails: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch important emails")
+
+
+# ============= Calendar Endpoints =============
+
+@router.get("/calendar/events")
+async def get_calendar_events(
+    authorization: str = Header(...),
+    days: int = 7,
+    db: Session = Depends(get_db)
+):
+    """Get upcoming calendar events."""
+    from calendar_tools import calendar_tools
+    
+    try:
+        token = authorization.replace("Bearer ", "")
+        payload = verify_token(token)
+        user_id = payload.get("sub")
+        
+        events = await calendar_tools.get_upcoming_events(user_id=user_id, days=days)
+        
+        return {"events": events, "count": len(events)}
+        
+    except Exception as e:
+        logger.error(f"Error fetching calendar events: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch calendar events")
+
+
+@router.get("/calendar/today")
+async def get_today_schedule(
+    authorization: str = Header(...),
+    db: Session = Depends(get_db)
+):
+    """Get today's schedule."""
+    from calendar_tools import calendar_tools
+    
+    try:
+        token = authorization.replace("Bearer ", "")
+        payload = verify_token(token)
+        user_id = payload.get("sub")
+        
+        events = await calendar_tools.get_today_schedule(user_id=user_id)
+        
+        return {"events": events, "count": len(events)}
+        
+    except Exception as e:
+        logger.error(f"Error fetching today's schedule: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch today's schedule")
+
+
+# ============= Memory Endpoints =============
+
+@router.get("/memory")
+async def get_user_memories(
+    authorization: str = Header(...),
+    db: Session = Depends(get_db)
+):
+    """Get all learned memories for the current user."""
+    from memory_brain import memory_brain
+    
+    try:
+        token = authorization.replace("Bearer ", "")
+        payload = verify_token(token)
+        user_id = payload.get("sub")
+        
+        memories = await memory_brain.get_all_memories(user_id=user_id)
+        
+        return {"memories": memories, "count": len(memories)}
+        
+    except Exception as e:
+        logger.error(f"Error fetching memories: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch memories")
+
+
+@router.delete("/memory/{memory_id}")
+async def delete_memory(
+    memory_id: str,
+    authorization: str = Header(...),
+    db: Session = Depends(get_db)
+):
+    """Delete a specific memory entry."""
+    from memory_brain import memory_brain
+    
+    try:
+        token = authorization.replace("Bearer ", "")
+        payload = verify_token(token)
+        user_id = payload.get("sub")
+        
+        success = await memory_brain.delete_memory(user_id=user_id, memory_id=memory_id)
+        
+        if success:
+            return {"success": True, "message": "Memory deleted"}
+        else:
+            raise HTTPException(status_code=404, detail="Memory not found")
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting memory: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to delete memory")
